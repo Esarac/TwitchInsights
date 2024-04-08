@@ -1,20 +1,30 @@
-# MusicInsights
+# Twitch Insight Studio 🎥
 
-Data Engineering project to analyse users music taste 😎
+Data Engineering project to analyse my streams 💪
 
 ## Instructions
 
 1. Download docker desktop.
-2. Download [offset explorer](https://kafkatool.com/download.html) (GUI Kafka tool).
+2. Create the .env file with the following variables:
+
+    - CLIENT_ID
+    - CLIENT_SECRET
+    - ESARAC_TOKEN
+
 3. Run docker-compose command.
 
     ```sh
     docker-compose up -d
     ```
 
-4. Open Offset Explorer &rarr; Add new connection &rarr; Add with the following parameters
+4. Run producer.py and consumer.py in different consoles.
 
-| Parameter | Value |
-|---|---|
-| Cluster Name | MusicInsightCluster |
-| Bootstrap Server | localhost:29092 |
+    ```sh
+    # To run the producer
+    py producer.py
+    ```
+
+    ```sh
+    # To run the consumer
+    py consumer.py
+    ```
