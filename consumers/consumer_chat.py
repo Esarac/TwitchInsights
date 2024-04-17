@@ -1,8 +1,17 @@
 from kafka import KafkaConsumer
-from decouple import config as env
+from decouple import Config, RepositoryEnv
+import os
 import pyodbc
 import pandas as pd
 from datetime import datetime
+
+# Env values
+ENV_PATH = os.path.join(os.path.dirname(__file__), '../.env')
+env = Config(RepositoryEnv(ENV_PATH))
+server = env.get('DB_SERVER')
+database = env.get('DB_DATABASE') 
+username = env.get('DB_USERNAME')
+password = env.get('DB_PASSWORD')
 
 # Kafka consumer config
 consumer = KafkaConsumer(
@@ -15,11 +24,6 @@ consumer = KafkaConsumer(
 )
 
 # Connect to DB
-server = env('DB_SERVER')
-database = env('DB_DATABASE') 
-username = env('DB_USERNAME')
-password = env('DB_PASSWORD')
-
 cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 cursor = cnxn.cursor()
 

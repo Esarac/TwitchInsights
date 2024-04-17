@@ -1,7 +1,13 @@
 from kafka import KafkaProducer
-from decouple import config as env
+from decouple import Config, RepositoryEnv
+import os
 from emoji import demojize
 import socket
+
+# Env values
+ENV_PATH = os.path.join(os.path.dirname(__file__), '../.env')
+env = Config(RepositoryEnv(ENV_PATH))
+token = env.get('TW_WEBSOCKET_TOKEN')
 
 # Kafka producer config
 producer = KafkaProducer(
@@ -14,7 +20,8 @@ config = {
     'server' : 'irc.chat.twitch.tv',
     'port' : 6667,
     'nickname' : 'ScrapingBot',
-    'token' : env('CHAT_TOKEN'),
+    'token' : token,
+    # 'channel' : '#elxokas',
     'channel' : '#Esarac567',
 }
 

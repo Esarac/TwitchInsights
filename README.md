@@ -2,7 +2,7 @@
 
 Data Engineering project to analyse my streams 💪
 
-## Instructions
+## Instructions (Out of date)
 
 1. Download docker desktop.
 2. Download Sql Server and configure server (users, logins, schemas).
@@ -35,3 +35,20 @@ Data Engineering project to analyse my streams 💪
     # To run the consumer
     py consumer_chat.py
     ```
+
+## Notes
+
+- [How to connect sql server container](https://stackoverflow.com/questions/47984603/using-sql-server-management-studio-to-remote-connect-to-docker-container)
+- Check container for MySql
+- Migrate database from local to container
+- Connect to PySpark ✅
+- Containarize python scripts (Consumers, Producers and Pipeline).
+- Connect with BI Tool
+- Update README.md
+- Think of which graphs we want (To know what data do we need):
+  - Viewers vs/and chatters per stream (Linechart)
+  - Viewers who are the most active (Barchar)
+  - Subscribers vs Followers vs Just Watching (Piechart)
+  - Top most used words (Barchar?)
+  - Hour with more views (Barchar,Line)
+  - More relevant topic (?)
