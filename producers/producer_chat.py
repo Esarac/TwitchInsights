@@ -21,8 +21,8 @@ config = {
     'port' : 6667,
     'nickname' : 'ScrapingBot',
     'token' : token,
-    # 'channel' : '#elxokas',
-    'channel' : '#Esarac567',
+    'channel' : '#elxokas',
+    # 'channel' : '#Esarac567',
 }
 
 sock = socket.socket()
@@ -34,6 +34,7 @@ sock.send(f"JOIN {config['channel']}\n".encode('utf-8'))
 
 # Get messages
 run = True
+print('Producer Running!')
 while run:
     # run = False
     resp = sock.recv(2048).decode('utf-8')
@@ -42,3 +43,4 @@ while run:
         sock.send("PONG\n".encode('utf-8'))
     elif len(resp) > 0:
         producer.send("messages-topic", value=demojize(resp))
+        print('~ data sent to "messages-topic"')

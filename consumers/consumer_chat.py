@@ -28,6 +28,7 @@ cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database
 cursor = cnxn.cursor()
 
 # Consume
+print('Consumer Running!')
 for record in consumer:
     print(f'~New record inserted')
     cursor.execute("INSERT INTO Twitch.MessagesStg (Date,MsgResponse) values(?,?)", datetime.fromtimestamp(float(record.timestamp)/1000), record.value)

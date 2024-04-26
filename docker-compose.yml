@@ -21,25 +21,28 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  
+
   mssql:
-    image: mcr.microsoft.com/mssql/server
-    container_name: MS_SQL_Server
+    image: mcr.microsoft.com/mssql/server:2019-latest
     restart: always
     environment:
-      SA_PASSWORD: "Pass123!"
-      ACCEPT_EULA: "Y"
+      - "SA_PASSWORD=${DB_SA_PASSWORD}"
+      - ACCEPT_EULA=Y
     volumes:
-      - mssql-data:/var/opt/mssql
+      - ./db/data/:/var/opt/mssql/data/
+      - ./db/log/:/var/opt/mssql/log/
+      - ./db/secrets/:/var/opt/mssql/secrets/
     ports:
       - 1433:1433
-    networks:
-          - dev
+  
+  # producers:
+  #   build:
+  #     dockerfile: ./producers/Dockerfile
+  #   depends_on:
+  #     - kafka
 
-volumes:
-  mssql-data:
-    driver: local
-
-networks:
-  dev:
-    driver: bridge
+  # consumers:
+  #   build:
+  #     dockerfile: ./consumers/Dockerfile
+  #   depends_on:
+  #     - kafka
