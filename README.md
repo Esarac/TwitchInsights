@@ -38,6 +38,12 @@ Data Engineering project to analyse my streams 💪
 
 ## Notes
 
+Use this command to use sqlcmd
+
+```sh
+/opt/mssql-tools/bin/sqlcmd -S "localhost" -U "SA"
+```
+
 - [How to connect sql server container](https://stackoverflow.com/questions/47984603/using-sql-server-management-studio-to-remote-connect-to-docker-container)
 - Check container for MySql
 - Migrate database from local to container
