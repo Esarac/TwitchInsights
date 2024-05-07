@@ -12,19 +12,21 @@ server = env.get('DB_SERVER')
 database = env.get('DB_DATABASE') 
 username = env.get('DB_USERNAME')
 password = env.get('DB_PASSWORD')
+kafka_server = env.get('KK_SERVER')
 
 # Kafka consumer config
 consumer = KafkaConsumer(
     'messages-topic',
+    # group_id='messages-consumer-db',
+    value_deserializer=lambda m: m.decode('utf-8'),
+    bootstrap_servers=[f'{kafka_server}:29092'],
     auto_offset_reset='earliest',
     enable_auto_commit=True,
-    group_id='messages-group-1',
-    value_deserializer=lambda m: m.decode('utf-8'),
-    bootstrap_servers=['localhost:29092']
 )
 
 # Connect to DB
-cnxn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+driver='ODBC Driver 17 for SQL Server'
+cnxn = pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 cursor = cnxn.cursor()
 
 # Consume

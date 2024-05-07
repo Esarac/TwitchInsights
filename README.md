@@ -7,7 +7,7 @@ Data Engineering project to analyse my streams 💪
 1. Download docker desktop.
 2. Download Sql Server and configure server (users, logins, schemas).
 3. Run DLL script on your database. **(Probably better idea to create a container for the DB)**
-4. Create the .env file with the following variables:
+4. Create the .env file with the following variables: https://twitchapps.com/tmi/ this link is to obtain websocket token
 
     - CLIENT_ID
     - CLIENT_SECRET

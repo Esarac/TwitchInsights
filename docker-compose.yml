@@ -1,4 +1,5 @@
-version: '2'
+version: '3'
+
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.4
@@ -7,20 +8,55 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - 22181:2181
-  
+    networks:
+      - broker-kafka
+    
   kafka:
-    image: confluentinc/cp-kafka:7.4.4
+    image: confluentinc/cp-kafka:6.2.0
+    container_name: kafka
+    networks:
+      - broker-kafka
     depends_on:
       - zookeeper
     ports:
+      - 9092:9092
+      - 9101:9101
       - 29092:29092
     environment:
       KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_HOST_NAME: kafka:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  # kafka:
+  #   image: confluentinc/cp-kafka:7.4.4
+  #   depends_on:
+  #     - zookeeper
+  #   ports:
+  #     - 29092:29092
+  #   environment:
+  #     KAFKA_BROKER_ID: 1
+  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+  #     KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  #   networks:
+  #     - broker-kafka
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:3.27.0
+    networks:
+      - broker-kafka
+    depends_on:
+      - kafka
+      - zookeeper
+    ports:
+      - 19000:9000
+    environment:
+      KAFKA_BROKERCONNECT: kafka:29092
 
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -40,6 +76,8 @@ services:
       retries: 10
       start_period: 10s
       timeout: 3s
+    networks:
+      - db-network
   mssql.configurator:
     image: mcr.microsoft.com/mssql/server:2019-latest
     volumes:
@@ -52,15 +90,35 @@ services:
       /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P ${DB_SA_PASSWORD} -d master -v KafkaPassword=${DB_PASSWORD} -i docker-entrypoint-initdb.d/init.sql;
       echo "All done!";
       '
+    networks:
+      - db-network
   
-  # producers:
-  #   build:
-  #     dockerfile: ./producers/Dockerfile
-  #   depends_on:
-  #     - kafka
+  producers:
+    build:
+      dockerfile: ./producers/Dockerfile
+    depends_on:
+      - kafka
+    restart: "always"
+    networks:
+      - broker-kafka
 
-  # consumers:
-  #   build:
-  #     dockerfile: ./consumers/Dockerfile
-  #   depends_on:
-  #     - kafka
+  consumers:
+    build:
+      dockerfile: ./consumers/Dockerfile
+    depends_on:
+      - kafka
+      - mssql
+      - producers
+    restart: "always"
+    networks:
+      - broker-kafka
+      - db-network
+
+networks:
+  broker-kafka:
+    # external: true
+    driver: bridge
+  
+  db-network:
+    # external: true
+    driver: bridge

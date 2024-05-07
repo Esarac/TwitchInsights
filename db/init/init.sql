@@ -43,6 +43,17 @@ CREATE TABLE [Twitch].[MessagesRef](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
+CREATE TABLE [Twitch].[MessagesStg](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Date] [datetime] NOT NULL,
+	[MsgResponse] [nvarchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
 -- ===========================================================================
 -- Create Users
 -- ===========================================================================
@@ -63,4 +74,9 @@ GRANT
 	,SELECT
 	,EXECUTE
 ON SCHEMA :: Twitch TO KafkaConsumer
+GO
+
+GRANT
+	CREATE TABLE
+TO KafkaConsumer;
 GO
