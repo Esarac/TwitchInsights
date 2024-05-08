@@ -1,4 +1,7 @@
 .env
-db/*
 
+db/*
 !db/init
+
+airflow/logs
+__pycache__/

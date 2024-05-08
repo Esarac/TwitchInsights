@@ -32,8 +32,8 @@ config = {
     'port' : 6667,
     'nickname' : 'ScrapingBot',
     'token' : token,
-    'channel' : '#knekro',
-    # 'channel' : '#Esarac567',
+    # 'channel' : '#knekro',
+    'channel' : '#Esarac567',
 }
 
 sock = socket.socket()

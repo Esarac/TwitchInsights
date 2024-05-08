@@ -9,6 +9,7 @@ order by tw.Date DESC
 -- Get all messages
 select *
 from Twitch.MessagesRef as tw
+order by tw.Date DESC
 
 -- Get duplicates
 select tw1.*

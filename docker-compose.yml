@@ -121,4 +121,5 @@ networks:
   
   db-network:
     # external: true
+    name: db-network
     driver: bridge
