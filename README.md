@@ -2,53 +2,44 @@
 
 Data Engineering project to analyse my streams 💪
 
-## Instructions (Out of date)
+## Architecure
+
+![architecure](docs\TwitchInsights_Architecure.png)
+
+## Instructions
 
 1. Download docker desktop.
-2. Download Sql Server and configure server (users, logins, schemas).
-3. Run DLL script on your database. **(Probably better idea to create a container for the DB)**
-4. Create the .env file with the following variables: https://twitchapps.com/tmi/ this link is to obtain websocket token
+2. Clone repository.
+3. Create a .env file with the following variables in the root folder:
 
-    - CLIENT_ID
-    - CLIENT_SECRET
-    - ESARAC_TOKEN
+    - Twitch
+        - TW_WEBSOCKET_TOKEN *go to [https://twitchapps.com/tmi/](https://twitchapps.com/tmi/) to obtain the token*
+    - Sql Server
+        - DB_SERVER='mssql'
+        - DB_DATABASE='DataAnalytics'
+        - DB_SA_PASSWORD
+        - DB_USERNAME='KafkaConsumer'
+        - DB_PASSWORD
+    - Kafka
+        - KK_SERVER='kafka'
 
-    - DB_SERVER
-    - DB_DATABASE
-    - DB_USERNAME
-    - DB_PASSWORD
-
-5. Run docker-compose command.
+4. Run docker-compose command.
 
     ```sh
     docker-compose up -d
     ```
 
-6. Run producer_chat.py and consumer_chat.py in different consoles.
+5. Then, go inside airflow folder and run docker-compose command.
 
     ```sh
-    # To run the producer
-    py producer_chat.py
+    cd airflow
+    docker-compose up -d
     ```
 
-    ```sh
-    # To run the consumer
-    py consumer_chat.py
-    ```
+6. Go to [airflow webserver](http://localhost:8080/).
 
-## Notes
+## To do
 
-Use this command to use sqlcmd
-
-```sh
-/opt/mssql-tools/bin/sqlcmd -S "localhost" -U "SA"
-```
-
-- [How to connect sql server container](https://stackoverflow.com/questions/47984603/using-sql-server-management-studio-to-remote-connect-to-docker-container)
-- Check container for MySql
-- Migrate database from local to container
-- Connect to PySpark ✅
-- Containarize python scripts (Consumers, Producers and Pipeline).
 - Connect with BI Tool
 - Update README.md
 - Think of which graphs we want (To know what data do we need):
