@@ -4,7 +4,7 @@ Data Engineering project to analyse my streams 💪
 
 ## Architecure
 
-![architecure](docs\TwitchInsights_Architecure.png)
+![architecure](./docs/TwitchInsights_Architecure.png)
 
 ## Instructions
 
