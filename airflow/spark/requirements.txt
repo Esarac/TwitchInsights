@@ -1,0 +1,8 @@
+pyspark==3.2.0
+python-decouple==3.8
+nltk==3.8
+jupyterlab
+pandas
+pyyaml
+delta-spark
+pyarrow

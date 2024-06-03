@@ -14,7 +14,7 @@ RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17 && ACCEPT_EULA=Y apt-get instal
 # Install python dependencies
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install --upgrade setuptools
-RUN python3 -m pip install -r src/requirements.txt --default-timeout=900
+RUN python3 -m pip install -r requirements.txt --default-timeout=900
 
 # Run code
 CMD [ "python3","-u","src/consumer_chat.py"]

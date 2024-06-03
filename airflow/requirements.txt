@@ -1,0 +1,11 @@
+apache-airflow-providers-microsoft-mssql==3.7.0
+apache-airflow-providers-odbc==4.5.0
+apache-airflow-providers-papermill==3.7.0
+pyspark==3.4.0
+python-decouple==3.8
+nltk==3.8
+jupyterlab
+pandas
+pyyaml
+delta-spark
+pyarrow
